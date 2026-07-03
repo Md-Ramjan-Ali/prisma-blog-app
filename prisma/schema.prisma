@@ -24,17 +24,27 @@ model Post {
   authorId   String?
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  comments   Comments[]
+
+  @@index([authorId])
+  @@map("posts")
 }
 
 model Comments {
-  id        String   @id @default(uuid())
+  id        String        @id @default(uuid())
   postId    String
+  post      Post          @relation(fields: [postId], references: [id])
   authorId  String?
   parentId  String?
+  parent    Comments?     @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comments[]    @relation("CommentReplies")
   status    CommentStatus @default(APPROVED)
-  content   String   @db.Text
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  content   String        @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([postId])
+  @@map("comments")
 }
 
 enum PostStatus {
@@ -47,4 +57,3 @@ enum CommentStatus {
   APPROVED
   REJECTED
 }
-  
