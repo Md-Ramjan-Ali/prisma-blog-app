@@ -1,9 +1,9 @@
-import { Router } from "express";
+import express, { Router } from "express";
 
-const router = Router();
+const router = express.Router();
 
-router.post("/create-post", (req, res) => {
-  res.send("hello World");
+router.post("/posts", (req, res) => {
+  res.send("Create a new post");
 });
 
 export const postRouter: Router = router;
